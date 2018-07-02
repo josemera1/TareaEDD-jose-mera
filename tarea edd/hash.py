@@ -29,21 +29,20 @@ class Node:
         self.phone = phone 
         self.mail = mail
         self.parent = None # Añadimos el atributo parent para facilitar la eliminación de un nodo
-
-class HashMap:
+class Hash:
 	def __init__(self):
 		self.size = 6
 		self.map = [None] * self.size
-		
+
 	def _get_hash(self, key):
 		hash = 0
 		for char in str(key):
 			hash += ord(char)
 		return hash % self.size
-		
-	def add(self, key, value):
+	
+	def add(self, key, nodo):
 		key_hash = self._get_hash(key)
-		key_value = [key, value]
+		key_value = [key, nodo]
 		
 		if self.map[key_hash] is None:
 			self.map[key_hash] = list([key_value])
@@ -51,7 +50,7 @@ class HashMap:
 		else:
 			for pair in self.map[key_hash]:
 				if pair[0] == key:
-					pair[1] = value
+					pair[1] = nodo
 					return True
 			self.map[key_hash].append(key_value)
 			return True
@@ -63,7 +62,25 @@ class HashMap:
 				if pair[0] == key:
 					return pair[1]
 		return None
-			
+
+	def find(self,clave):
+      ranuraInicio = self.funcionHash(clave,len(self.ranuras))
+
+      dato = None
+      parar = False
+      encontrado = False
+      posicion = ranuraInicio
+      while self.ranuras[posicion] != None and  \
+                           not encontrado and not parar:
+         if self.ranuras[posicion] == clave:
+           encontrado = True
+           dato = self.datos[posicion]
+         else:
+           posicion=self.rehash(posicion,len(self.ranuras))
+           if posicion == ranuraInicio:
+               parar = True
+      return dato
+
 	def delete(self, key):
 		key_hash = self._get_hash(key)
 		
@@ -74,9 +91,9 @@ class HashMap:
 				self.map[key_hash].pop(i)
 				return True
 		return False
-			
-	def print(self):
-		print('---PHONEBOOK----')
+
+	def imprimir(self):
+		print('-------')
 		for item in self.map:
 			if item is not None:
 				print(str(item))
