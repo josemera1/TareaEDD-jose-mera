@@ -28,7 +28,6 @@ class Node:
         self.lname = lname
         self.phone = phone 
         self.mail = mail
-        self.parent = None # Añadimos el atributo parent para facilitar la eliminación de un nodo
 class Hash:
 	def __init__(self):
 		self.size = 6
